@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
+import axios from 'axios'
 
 const ViewAll = () => {
+    const [data, changeData] = useState([])
+    const fetchData=()=>{
+        axios.get("http://172.16.12.153:4000/getvistors").then(
+            (response)=>{
+                changeData(response.data)
+            }
+        ).catch()
+    }
+    useEffect(
+        ()=>{fetchData()},[]
+    )
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             <div className="container">
                 <div className="row">
                     <div className="col-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
@@ -20,30 +32,22 @@ const ViewAll = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>Visit</td>
-                                    <td>Principal</td>
-                                    <td>21-8-2024</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>Internship</td>
-                                    <td>CS Deepartment HOD</td>
-                                    <td>13-8-2024</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Hansel</td>
-                                    <td>Sabu</td>
-                                    <td>Internship</td>
-                                    <td>HOD</td>
-                                    <td>13-8-2024</td>
-                                </tr>
+
+                                {
+                                    data.map(
+                                        (value, index) => {
+                                            return <tr>
+                                                <th scope="row">{index+1}</th>
+                                                <td>{value.firstname}</td>
+                                                <td>{value.lastname}</td>
+                                                <td>{value.purpose}</td>
+                                                <td>{value.whomToMeet}</td>
+                                                <td>{value.date}</td>
+                                            </tr>
+                                        }
+                                    )
+                                }
+
                             </tbody>
                         </table>
 
